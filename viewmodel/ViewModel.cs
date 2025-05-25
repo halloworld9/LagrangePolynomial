@@ -32,17 +32,18 @@ namespace LagrangePolynomial.viewmodel
                     _dots.Add(new Point(p.Value.X, p.Value.Y));
                     if (Dots.Count < 2) return; 
                     Lines.Clear();
-                    int max = 0;
-                    int min = 0;
+                    double max = 0;
+                    double min = 0;
                     foreach (var item in _dots)
                     {
-                        max = Math.Max(max, (int)item.X);
-                        min = Math.Min(min, (int)item.X);
+                        max = Math.Max(max, item.X);
+                        min = Math.Min(min, item.X);
                     }
                     
                     var l = new Lagrange(_dots.ToArray());
+                    var step = (max - min) / 500;
                     var lastDot = l.ComputePolynomial(min);
-                    for (int i = min + 1; i < max+ 100; i++)
+                    for (double i = min + step; i <= max + step; i+=step)
                     {
                         var dot = l.ComputePolynomial(i);
                         Lines.Add(new Line(lastDot.X, dot.X, lastDot.Y, dot.Y));
